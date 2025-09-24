@@ -24,7 +24,7 @@ services:
       POSTGRES_PASSWORD: 'dimasw1950'
       POSTGRES_DB: 'pos'
     ports:
-      - '5433:5432'
+      - '5435:5432'
     networks:
       - pos
 
