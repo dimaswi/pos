@@ -16,7 +16,7 @@ services:
     networks:
       - pos
 
-  pos_bd:
+  pos_db:
     image: postgres:latest
     restart: always
     environment:
