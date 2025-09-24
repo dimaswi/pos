@@ -6,7 +6,7 @@ services:
     image: nginx:alpine
     container_name: nginx_pos
     ports:
-      - '8040:80'
+      - '8040:8040'
     volumes:
       - ./:/var/www/html
       - ./docker/nginx/site.conf:/etc/nginx/conf.d/default.conf:rw
