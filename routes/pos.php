@@ -10,6 +10,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/select-store', [CashierController::class, 'selectStore'])->name('select-store')->middleware('permission:pos.view');
         Route::post('/set-store', [CashierController::class, 'setStore'])->name('set-store')->middleware('permission:pos.view');
         Route::post('/reset-store', [CashierController::class, 'resetStore'])->name('reset-store')->middleware('permission:pos.view');
+        Route::post('/exit', [CashierController::class, 'exitPOS'])->name('exit')->middleware('permission:pos.view');
         
         // Cashier Interface
         Route::prefix('cashier')->name('cashier.')->group(function () {

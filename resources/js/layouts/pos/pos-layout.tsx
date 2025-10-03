@@ -62,7 +62,7 @@ export default function POSLayout({ children, title }: Props) {
                             <Button
                                 variant="outline"
                                 size="sm"
-                                onClick={() => router.post(route('pos.reset-store'))}
+                                onClick={() => router.post(route('pos.exit'))}
                                 className="border-red-300 text-red-700 hover:bg-red-50"
                             >
                                 <LogOut className="h-4 w-4 mr-1" />

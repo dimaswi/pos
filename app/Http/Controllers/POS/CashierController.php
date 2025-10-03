@@ -432,35 +432,44 @@ class CashierController extends Controller
     /**
      * Show store selection page
      */
-    public function selectStore()
+    public function selectStore(Request $request)
     {
         /** @var User $user */
         $user = Auth::user();
         
-        // If user already has a store selected, redirect to cashier
-        if ($user->current_store_id) {
-            $currentStore = Store::find($user->current_store_id);
-            if ($currentStore && $user->stores()->where('stores.id', $currentStore->id)->exists()) {
-                return redirect()->route('pos.cashier.index');
-            }
-            // If current store is invalid, reset it
+        $from = $request->get('from');
+        $forceSelection = $request->get('force', false);
+        
+        // If coming from logout or forced selection, always show selection page
+        if ($from === 'logout' || $forceSelection) {
             $user->update(['current_store_id' => null]);
+        } else {
+            // If user already has a store selected, redirect to cashier
+            if ($user->current_store_id) {
+                $currentStore = Store::find($user->current_store_id);
+                if ($currentStore && $user->stores()->where('stores.id', $currentStore->id)->exists()) {
+                    return redirect()->route('pos.cashier.index');
+                }
+                // If current store is invalid, reset it
+                $user->update(['current_store_id' => null]);
+            }
         }
         
         // Get stores assigned to this user
         $userStores = $user->stores()->get();
         
-        // Always show select-store page, even if no stores available
-        // Frontend will handle empty state appropriately
-        if ($userStores->count() === 1) {
-            // If user only has one store, auto-select it
+        // Only auto-select if user has one store AND not coming from logout/reset
+        if ($userStores->count() === 1 && $from !== 'logout' && !$forceSelection) {
             $user->update(['current_store_id' => $userStores->first()->id]);
             return redirect()->route('pos.cashier.index');
         }
 
         return Inertia::render('pos/select-store', [
             'stores' => $userStores,
-            'hasStores' => $userStores->count() > 0
+            'hasStores' => $userStores->count() > 0,
+            'from' => $from,
+            'canExit' => true, // Always allow exit
+            'message' => $request->get('message')
         ]);
     }
 
@@ -490,14 +499,38 @@ class CashierController extends Controller
     /**
      * Reset current store selection (for admin/logout)
      */
-    public function resetStore()
+    public function resetStore(Request $request)
     {
         /** @var User $user */
         $user = Auth::user();
         
         $user->update(['current_store_id' => null]);
 
-        return redirect()->route('pos.select-store', ['from' => 'logout', 'message' => 'reset_success']);
+        $destination = $request->get('destination', 'select-store');
+        
+        if ($destination === 'dashboard' || $destination === 'home') {
+            return redirect()->route('dashboard')->with('success', 'Berhasil keluar dari mode POS');
+        }
+
+        return redirect()->route('pos.select-store', [
+            'from' => 'reset', 
+            'force' => true,
+            'message' => 'store_reset'
+        ]);
+    }
+
+    /**
+     * Exit POS mode and return to dashboard
+     */
+    public function exitPOS()
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        
+        // Reset current store selection
+        $user->update(['current_store_id' => null]);
+
+        return redirect()->route('dashboard')->with('success', 'Berhasil keluar dari mode POS');
     }
 
     /**

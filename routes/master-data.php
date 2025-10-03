@@ -21,8 +21,11 @@ Route::middleware('auth')->group(function () {
     
     // Store User Assignment
     Route::post('master-data/stores/{store}/assign-users', [UserStoreController::class, 'assignUsers'])->name('master-data.stores.assign-users')->middleware('permission:store.edit');
+    Route::post('master-data/stores/{store}/sync-users', [UserStoreController::class, 'syncUsers'])->name('master-data.stores.sync-users')->middleware('permission:store.edit');
     Route::delete('master-data/stores/{store}/remove-user/{user}', [UserStoreController::class, 'removeUser'])->name('master-data.stores.remove-user')->middleware('permission:store.edit');
     Route::get('master-data/stores/{store}/unassigned-users', [UserStoreController::class, 'getUnassignedUsers'])->name('master-data.stores.unassigned-users')->middleware('permission:store.view');
+    Route::get('master-data/stores/{store}/all-users', [UserStoreController::class, 'getAllUsers'])->name('master-data.stores.all-users')->middleware('permission:store.view');
+    Route::post('master-data/stores/bulk-assign', [UserStoreController::class, 'bulkAssign'])->name('master-data.stores.bulk-assign')->middleware('permission:store.edit');
 
     // Category Management
     Route::get('master-data/categories', [CategoryController::class, 'index'])->name('master-data.categories.index')->middleware('permission:category.view');
