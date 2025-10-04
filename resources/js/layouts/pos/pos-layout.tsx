@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function POSLayout({ children, title }: Props) {
-    const { auth, store } = usePage().props as any;
+    const { auth, store, userStoreCount } = usePage().props as any;
     const [currentTime, setCurrentTime] = useState(new Date());
 
     // Update time every second
@@ -22,6 +22,16 @@ export default function POSLayout({ children, title }: Props) {
 
         return () => clearInterval(timer);
     }, []);
+
+    const handleExitPOS = () => {
+        if (userStoreCount > 1) {
+            // User has multiple stores, go to select-store page
+            router.get('/pos/select-store?force=true&from=exit');
+        } else {
+            // User has only one store, exit directly to dashboard
+            router.post(route('pos.exit'));
+        }
+    };
 
     return (
         <div className="h-screen flex flex-col bg-white text-gray-900">
@@ -62,7 +72,7 @@ export default function POSLayout({ children, title }: Props) {
                             <Button
                                 variant="outline"
                                 size="sm"
-                                onClick={() => router.post(route('pos.exit'))}
+                                onClick={handleExitPOS}
                                 className="border-red-300 text-red-700 hover:bg-red-50"
                             >
                                 <LogOut className="h-4 w-4 mr-1" />

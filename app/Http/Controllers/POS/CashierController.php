@@ -109,6 +109,7 @@ class CashierController extends Controller
             'paymentMethods' => $paymentMethods,
             'discounts' => $discounts,
             'store' => $userStore,
+            'userStoreCount' => $user->stores()->count(),
             'filters' => [
                 'search' => $search,
                 'category_id' => $categoryId,
@@ -530,7 +531,20 @@ class CashierController extends Controller
         // Reset current store selection
         $user->update(['current_store_id' => null]);
 
-        return redirect()->route('dashboard')->with('success', 'Berhasil keluar dari mode POS');
+        // Check how many stores user has access to
+        $userStoreCount = $user->stores()->count();
+        
+        if ($userStoreCount > 1) {
+            // If user has multiple stores, redirect to store selection
+            return redirect()->route('pos.select-store', [
+                'from' => 'exit', 
+                'force' => true,
+                'message' => 'pos_exit'
+            ]);
+        } else {
+            // If user has only one store or no stores, exit to dashboard
+            return redirect()->route('dashboard')->with('success', 'Berhasil keluar dari mode POS');
+        }
     }
 
     /**
