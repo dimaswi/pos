@@ -158,16 +158,16 @@ export default function Users() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Users" />
             <div className="p-4">
-                <div className="mb-4 flex items-center justify-between">
-                    <form onSubmit={handleSearchSubmit} className="flex items-center gap-2">
-                        <div className="relative">
+                <div className="mb-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                    <form onSubmit={handleSearchSubmit} className="flex flex-1 items-center gap-2">
+                        <div className="relative flex-1 md:flex-none">
                             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                             <Input
                                 type="text"
                                 placeholder="Cari nama atau NIP..."
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                className="pl-10 pr-10 w-64"
+                                className="pl-10 pr-10 flex-1 md:w-64"
                             />
                             {search && (
                                 <button
@@ -179,8 +179,9 @@ export default function Users() {
                                 </button>
                             )}
                         </div>
-                        <Button type="submit" variant="outline" size="sm">
-                            Cari
+                        <Button type="submit" variant="outline" size="sm" className="shrink-0">
+                            <span className="hidden sm:inline">Cari</span>
+                            <Search className="h-4 w-4 sm:hidden" />
                         </Button>
                     </form>
                     
@@ -188,11 +189,12 @@ export default function Users() {
                         <Button 
                             variant="outline" 
                             size="sm" 
-                            className="flex items-center gap-2 hover:bg-green-200"
+                            className="flex items-center gap-2 hover:bg-green-200 justify-center"
                             onClick={() => router.visit('/settings/users/create')}
                         >
                             <PlusCircle className="h-4 w-4 text-green-500" />
-                            Tambah
+                            <span className="hidden sm:inline">Tambah</span>
+                            <span className="sm:hidden">Add</span>
                         </Button>
                     </PermissionGate>
                 </div>

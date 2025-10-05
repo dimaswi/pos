@@ -197,24 +197,24 @@ export default function CategoryIndex() {
                 <CardContent>
                     <div className="space-y-4">
                         {/* Search and Filter Section */}
-                        <div className="flex items-center justify-between gap-4">
+                        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                             <form 
                                 onSubmit={(e) => {
                                     e.preventDefault();
                                     handleSearch(search);
                                 }}
-                                className="flex items-center gap-2"
+                                className="flex flex-1 items-center gap-2"
                             >
                                 <Input
                                     type="text"
                                     placeholder="Cari kategori..."
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
-                                    className="w-[300px]"
+                                    className="flex-1 md:w-[300px] md:flex-none"
                                 />
-                                <Button type="submit" size="sm" className="flex items-center gap-2">
+                                <Button type="submit" size="sm" className="flex items-center gap-2 shrink-0">
                                     <Search className="h-4 w-4" />
-                                    Cari
+                                    <span className="hidden sm:inline">Cari</span>
                                 </Button>
                             </form>
                             
@@ -222,21 +222,22 @@ export default function CategoryIndex() {
                                 <Button 
                                     variant="outline" 
                                     size="sm" 
-                                    className="flex items-center gap-2"
+                                    className="flex items-center gap-2 flex-1 sm:flex-none justify-center"
                                     onClick={() => setShowFilters(!showFilters)}
                                 >
                                     <Filter className="h-4 w-4" />
-                                    Filter
+                                    <span className="hidden sm:inline">Filter</span>
                                 </Button>
                                 <PermissionGate permission="category.create">
                                     <Button 
                                         variant="outline" 
                                         size="sm" 
-                                        className="flex items-center gap-2 hover:bg-green-200"
+                                        className="flex items-center gap-2 hover:bg-green-200 flex-1 sm:flex-none justify-center"
                                         onClick={() => router.visit('/master-data/categories/create')}
                                     >
                                         <PlusCircle className="h-4 w-4 text-green-500" />
-                                        Tambah Kategori
+                                        <span className="hidden sm:inline">Tambah Kategori</span>
+                                        <span className="sm:hidden">Tambah</span>
                                     </Button>
                                 </PermissionGate>
                             </div>

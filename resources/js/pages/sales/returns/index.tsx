@@ -194,36 +194,29 @@ export default function Index({ returns, stores, stats, filters }: Props) {
                                 Kelola retur penjualan dan refund pelanggan
                             </CardDescription>
                         </div>
-                        <PermissionGate permission="return.create">
-                            <Link href={route('sales.returns.create')}>
-                                <Button>
-                                    <Plus className="w-4 h-4 mr-2" />
-                                    Retur Baru
-                                </Button>
-                            </Link>
-                        </PermissionGate>
                     </div>
                 </CardHeader>
                 <CardContent>
                     <div className="space-y-4">
                         {/* Search and Filter Section */}
-                        <div className="flex items-center justify-between gap-4">
+                        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                             <form 
                                 onSubmit={(e) => {
                                     e.preventDefault();
                                     handleFilter();
                                 }}
-                                className="flex items-center gap-2"
+                                className="flex flex-1 items-center gap-2"
                             >
                                 <Input
                                     type="text"
                                     placeholder="Cari retur..."
                                     value={data.search}
                                     onChange={(e) => setData('search', e.target.value)}
-                                    className="w-[300px]"
+                                    className="flex-1 md:w-[300px] md:flex-none"
                                 />
-                                <Button type="submit" variant="outline" disabled={processing}>
+                                <Button type="submit" variant="outline" disabled={processing} className="shrink-0">
                                     <Search className="h-4 w-4" />
+                                    <span className="hidden sm:inline ml-2">Cari</span>
                                 </Button>
                             </form>
                             
@@ -231,10 +224,20 @@ export default function Index({ returns, stores, stats, filters }: Props) {
                                 <Button
                                     variant="outline"
                                     onClick={() => setShowFilters(!showFilters)}
+                                    className="flex-1 sm:flex-none justify-center flex items-center gap-2"
                                 >
-                                    <Filter className="h-4 w-4 mr-2" />
-                                    Filter
+                                    <Filter className="h-4 w-4" />
+                                    <span className="hidden sm:inline">Filter</span>
                                 </Button>
+                                <PermissionGate permission="return.create">
+                                    <Link href={route('sales.returns.create')}>
+                                        <Button className="flex-1 sm:flex-none justify-center flex items-center gap-2">
+                                            <Plus className="w-4 h-4" />
+                                            <span className="hidden sm:inline">Retur Baru</span>
+                                            <span className="sm:hidden">Baru</span>
+                                        </Button>
+                                    </Link>
+                                </PermissionGate>
                             </div>
                         </div>
 
@@ -244,12 +247,12 @@ export default function Index({ returns, stores, stats, filters }: Props) {
                                 <CardContent className="pt-6">
                                     <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
                                         <div>
-                                            <Select value={data.store_id} onValueChange={(value) => setData('store_id', value)}>
+                                            <Select value={data.store_id || "all"} onValueChange={(value) => setData('store_id', value === "all" ? "" : value)}>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder="Semua Toko" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="">Semua Toko</SelectItem>
+                                                    <SelectItem value="all">Semua Toko</SelectItem>
                                                     {stores.map((store) => (
                                                         <SelectItem key={store.id} value={store.id.toString()}>
                                                             {store.name}
@@ -260,12 +263,12 @@ export default function Index({ returns, stores, stats, filters }: Props) {
                                         </div>
                                         
                                         <div>
-                                            <Select value={data.status} onValueChange={(value) => setData('status', value)}>
+                                            <Select value={data.status || "all"} onValueChange={(value) => setData('status', value === "all" ? "" : value)}>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder="Semua Status" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="">Semua Status</SelectItem>
+                                                    <SelectItem value="all">Semua Status</SelectItem>
                                                     <SelectItem value="pending">Pending</SelectItem>
                                                     <SelectItem value="approved">Disetujui</SelectItem>
                                                     <SelectItem value="rejected">Ditolak</SelectItem>

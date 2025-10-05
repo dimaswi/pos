@@ -253,63 +253,95 @@ export default function FinancialReport({
 
                 {/* Summary Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Total Pendapatan</CardTitle>
-                        <DollarSign className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold text-green-600">
-                            {formatCurrency(summary.totalRevenue)}
+                    <Card className="border shadow-sm hover:shadow-md transition-shadow">
+                    <CardContent className="p-4 sm:p-6">
+                        <div className="flex items-start justify-between">
+                            <div className="space-y-2 flex-1">
+                                <div className="flex items-center gap-2">
+                                    <div className="p-2 rounded-lg bg-muted">
+                                        <DollarSign className="h-4 w-4 text-muted-foreground" />
+                                    </div>
+                                    <p className="text-sm font-medium text-muted-foreground">
+                                        Total Pendapatan
+                                    </p>
+                                </div>
+                                <p className="text-2xl font-bold text-foreground">
+                                    {formatCurrency(summary.totalRevenue)}
+                                </p>
+                            </div>
                         </div>
-                        <p className="text-xs text-muted-foreground">
-                            {summary.totalTransactions} transaksi
-                        </p>
+                        <div className="flex items-center justify-between mt-4 pt-3 border-t">
+                            <span className="text-xs text-muted-foreground">{summary.totalTransactions} transaksi</span>
+                        </div>
                     </CardContent>
                 </Card>
 
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">HPP (COGS)</CardTitle>
-                        <Calculator className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold text-orange-600">
-                            {formatCurrency(summary.totalCOGS)}
+                <Card className="border shadow-sm hover:shadow-md transition-shadow">
+                    <CardContent className="p-4 sm:p-6">
+                        <div className="flex items-start justify-between">
+                            <div className="space-y-2 flex-1">
+                                <div className="flex items-center gap-2">
+                                    <div className="p-2 rounded-lg bg-muted">
+                                        <BarChart3 className="h-4 w-4 text-muted-foreground" />
+                                    </div>
+                                    <p className="text-sm font-medium text-muted-foreground">
+                                        HPP (COGS)
+                                    </p>
+                                </div>
+                                <p className="text-2xl font-bold text-foreground">
+                                    {formatCurrency(summary.totalCOGS)}
+                                </p>
+                            </div>
                         </div>
-                        <p className="text-xs text-muted-foreground">
-                            Harga Pokok Penjualan
-                        </p>
+                        <div className="flex items-center justify-between mt-4 pt-3 border-t">
+                            <span className="text-xs text-muted-foreground">Harga Pokok Penjualan</span>
+                        </div>
                     </CardContent>
                 </Card>
 
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Laba Kotor</CardTitle>
-                        <TrendingUp className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold text-blue-600">
-                            {formatCurrency(summary.grossProfit)}
+                <Card className="border shadow-sm hover:shadow-md transition-shadow">
+                    <CardContent className="p-4 sm:p-6">
+                        <div className="flex items-start justify-between">
+                            <div className="space-y-2 flex-1">
+                                <div className="flex items-center gap-2">
+                                    <div className="p-2 rounded-lg bg-muted">
+                                        <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                                    </div>
+                                    <p className="text-sm font-medium text-muted-foreground">
+                                        Laba Kotor
+                                    </p>
+                                </div>
+                                <p className="text-2xl font-bold text-foreground">
+                                    {formatCurrency(summary.grossProfit)}
+                                </p>
+                            </div>
                         </div>
-                        <p className="text-xs text-muted-foreground">
-                            Pendapatan - HPP
-                        </p>
+                        <div className="flex items-center justify-between mt-4 pt-3 border-t">
+                            <span className="text-xs text-muted-foreground">Pendapatan - HPP</span>
+                        </div>
                     </CardContent>
                 </Card>
 
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Margin Keuntungan</CardTitle>
-                        <PieChart className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold text-purple-600">
-                            {formatPercentage(summary.profitMargin)}
+                <Card className="border shadow-sm hover:shadow-md transition-shadow">
+                    <CardContent className="p-4 sm:p-6">
+                        <div className="flex items-start justify-between">
+                            <div className="space-y-2 flex-1">
+                                <div className="flex items-center gap-2">
+                                    <div className="p-2 rounded-lg bg-muted">
+                                        <PieChart className="h-4 w-4 text-muted-foreground" />
+                                    </div>
+                                    <p className="text-sm font-medium text-muted-foreground">
+                                        Margin Keuntungan
+                                    </p>
+                                </div>
+                                <p className="text-2xl font-bold text-foreground">
+                                    {formatPercentage(summary.profitMargin)}
+                                </p>
+                            </div>
                         </div>
-                        <p className="text-xs text-muted-foreground">
-                            Persentase keuntungan
-                        </p>
+                        <div className="flex items-center justify-between mt-4 pt-3 border-t">
+                            <span className="text-xs text-muted-foreground">Persentase keuntungan</span>
+                        </div>
                     </CardContent>
                 </Card>
             </div>
@@ -324,20 +356,20 @@ export default function FinancialReport({
                 </CardHeader>
                 <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                        <div className="text-center">
-                            <div className="text-2xl font-bold text-red-600">
+                        <div className="text-center p-4 bg-muted/30 rounded-lg border">
+                            <div className="text-2xl font-bold text-foreground">
                                 {formatCurrency(discountSummary.total_all_discounts)}
                             </div>
                             <p className="text-sm text-muted-foreground">Total Semua Diskon</p>
                         </div>
-                        <div className="text-center">
-                            <div className="text-2xl font-bold text-orange-600">
+                        <div className="text-center p-4 bg-muted/30 rounded-lg border">
+                            <div className="text-2xl font-bold text-foreground">
                                 {formatPercentage(discountSummary.average_discount_percentage)}
                             </div>
                             <p className="text-sm text-muted-foreground">Rata-rata Persentase Diskon</p>
                         </div>
-                        <div className="text-center">
-                            <div className="text-2xl font-bold text-blue-600">
+                        <div className="text-center p-4 bg-muted/30 rounded-lg border">
+                            <div className="text-2xl font-bold text-foreground">
                                 {discountSummary.transactions_with_discount}
                             </div>
                             <p className="text-sm text-muted-foreground">Transaksi dengan Diskon</p>

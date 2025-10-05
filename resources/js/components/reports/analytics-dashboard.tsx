@@ -10,7 +10,6 @@ import {
     ShoppingCart, 
     Package,
     RefreshCw,
-    Clock,
     Activity
 } from 'lucide-react';
 
@@ -82,7 +81,6 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
     const [realtimeData, setRealtimeData] = useState<RealtimeData | null>(null);
     const [loading, setLoading] = useState(true);
     const [period, setPeriod] = useState('today');
-    const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
 
     const formatCurrency = (amount: number) => {
         return new Intl.NumberFormat('id-ID', {
@@ -165,7 +163,6 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
             if (response.ok) {
                 const data = await response.json();
                 setRealtimeData(data);
-                setLastUpdate(new Date());
             }
         } catch (error) {
             console.error('Error fetching realtime data:', error);
@@ -280,9 +277,7 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
                     </Badge>
                 </div>
                 
-                <div className="flex items-center gap-2 text-sm text-gray-500">
-                    <Clock className="h-4 w-4" />
-                    Update terakhir: {lastUpdate.toLocaleTimeString('id-ID')}
+                <div className="flex items-center gap-2">
                     <Button 
                         variant="ghost" 
                         size="sm" 
@@ -291,8 +286,10 @@ export const AnalyticsDashboard: React.FC<AnalyticsDashboardProps> = ({
                             fetchRealtimeData();
                         }}
                         disabled={loading}
+                        className="text-xs"
                     >
-                        <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+                        <RefreshCw className={`h-3 w-3 mr-1 ${loading ? 'animate-spin' : ''}`} />
+                        Refresh
                     </Button>
                 </div>
             </div>

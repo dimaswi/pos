@@ -241,23 +241,24 @@ export default function CustomerIndex() {
                 <CardContent>
                     <div className="space-y-4">
                         {/* Search and Filter Section */}
-                        <div className="flex items-center justify-between gap-4">
+                        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                             <form 
                                 onSubmit={(e) => {
                                     e.preventDefault();
                                     handleSearch(search);
                                 }}
-                                className="flex items-center gap-2"
+                                className="flex flex-1 items-center gap-2"
                             >
                                 <Input
                                     type="text"
                                     placeholder="Cari pelanggan..."
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
-                                    className="w-[300px]"
+                                    className="flex-1 md:w-[300px] md:flex-none"
                                 />
-                                <Button type="submit" variant="outline" size="sm">
+                                <Button type="submit" variant="outline" size="sm" className="shrink-0">
                                     <Search className="h-4 w-4" />
+                                    <span className="hidden sm:inline ml-2">Cari</span>
                                 </Button>
                             </form>
 
@@ -266,19 +267,22 @@ export default function CustomerIndex() {
                                     variant={showFilters ? "default" : "outline"}
                                     size="sm"
                                     onClick={() => setShowFilters(!showFilters)}
+                                    className="flex-1 sm:flex-none justify-center"
                                 >
-                                    <Filter className="h-4 w-4 mr-2" />
-                                    Filter
+                                    <Filter className="h-4 w-4" />
+                                    <span className="ml-2 hidden sm:inline">Filter</span>
                                 </Button>
 
                                 <PermissionGate permission="customer.create">
                                     <Button 
                                         onClick={() => router.get(route('master-data.customers.create'))}
                                         size="sm"
+                                        className="flex-1 sm:flex-none justify-center"
                                     >
-                                        <PlusCircle className="h-4 w-4 mr-2" />
-                                            Tambah Pelanggan
-                                        </Button>
+                                        <PlusCircle className="h-4 w-4" />
+                                        <span className="ml-2 hidden sm:inline">Tambah Pelanggan</span>
+                                        <span className="ml-2 sm:hidden">Tambah</span>
+                                    </Button>
                                 </PermissionGate>
                             </div>
                         </div>

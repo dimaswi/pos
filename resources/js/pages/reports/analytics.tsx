@@ -50,10 +50,10 @@ export default function Analytics({ stores, quickStats }: Props) {
     }) => (
         <button
             onClick={onClick}
-            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+            className={`px-2 py-2 text-xs font-medium rounded-lg transition-colors w-full ${
                 isActive
-                    ? 'bg-blue-600 text-white shadow-sm'
-                    : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
+                    ? 'bg-primary text-primary-foreground shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-muted'
             }`}
         >
             {children}
@@ -81,95 +81,112 @@ export default function Analytics({ stores, quickStats }: Props) {
         <AppLayout>
             <Head title="Analytics Dashboard" />
             
-            <div className="p-6 space-y-6">
+            <div className="p-2 sm:p-4 lg:p-6 space-y-3 sm:space-y-4 lg:space-y-6">
                 {/* Header Section */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Analytics Dashboard</h1>
-                        <p className="text-gray-600">Analisis data bisnis real-time dan insights</p>
-                    </div>
-                    
-                    <div className="flex items-center gap-3">
-                        <Badge variant="outline" className="text-xs">
-                            <Activity className="h-3 w-3 mr-1" />
-                            Live Analytics
-                        </Badge>
+                <div className="bg-card border rounded-lg p-3 sm:p-4 lg:p-6 shadow-sm">
+                    <div className="flex flex-col gap-3 sm:gap-4">
+                        <div className="flex items-start gap-3">
+                            <div className="p-2 rounded-lg bg-primary/10 flex-shrink-0">
+                                <Activity className="h-5 w-5 text-primary" />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                                <h1 className="text-base sm:text-lg lg:text-xl font-bold text-foreground leading-tight">Analytics Dashboard</h1>
+                                <Badge variant="secondary" className="text-xs mt-1">
+                                    Real-time Analytics
+                                </Badge>
+                            </div>
+                            <Badge variant="outline" className="text-xs flex-shrink-0">
+                                <Activity className="h-3 w-3 mr-1" />
+                                Live
+                            </Badge>
+                        </div>
+                        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                            Analisis data bisnis real-time dengan insights mendalam untuk pengambilan keputusan strategis
+                        </p>
                     </div>
                 </div>
 
                 {/* Store Selector */}
-                <Card>
-                    <CardContent className="p-4">
-                        <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-2">
-                                <StoreIcon className="h-4 w-4 text-gray-500" />
-                                <span className="text-sm font-medium">Filter Toko:</span>
-                            </div>
-                            <div className="flex flex-wrap gap-2">
-                                {stores.map((store) => (
-                                    <Badge
-                                        key={store.id}
-                                        variant={selectedStoreId === store.id.toString() ? 'default' : 'outline'}
-                                        className="cursor-pointer hover:bg-gray-100"
-                                        onClick={() => setSelectedStoreId(store.id.toString())}
-                                    >
-                                        {store.name}
-                                    </Badge>
-                                ))}
+                <Card className="border shadow-sm">
+                    <CardHeader className="pb-2 sm:pb-3">
+                        <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+                            <StoreIcon className="h-4 w-4 text-muted-foreground" />
+                            Filter Toko
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                        <div className="flex flex-wrap gap-1.5">
+                            <Badge
+                                variant={selectedStoreId === 'all' ? 'default' : 'outline'}
+                                className="cursor-pointer hover:bg-muted transition-colors text-xs px-2 py-1"
+                                onClick={() => setSelectedStoreId('all')}
+                            >
+                                Semua Toko
+                            </Badge>
+                            {stores.map((store) => (
                                 <Badge
-                                    variant={selectedStoreId === 'all' ? 'default' : 'outline'}
-                                    className="cursor-pointer hover:bg-gray-100"
-                                    onClick={() => setSelectedStoreId('all')}
+                                    key={store.id}
+                                    variant={selectedStoreId === store.id.toString() ? 'default' : 'outline'}
+                                    className="cursor-pointer hover:bg-muted transition-colors text-xs px-2 py-1 truncate max-w-[100px] sm:max-w-[150px] lg:max-w-none"
+                                    onClick={() => setSelectedStoreId(store.id.toString())}
+                                    title={store.name}
                                 >
-                                    Semua Toko
+                                    {store.name}
                                 </Badge>
-                            </div>
+                            ))}
                         </div>
                     </CardContent>
                 </Card>
 
                 {/* Navigation Tabs */}
-                <Card>
-                    <CardHeader className="pb-0">
-                        <div className="border-b border-gray-200">
-                            <div className="flex space-x-1 pb-4">
+                <Card className="border shadow-sm">
+                    <CardHeader className="pb-3">
+                        <div className="flex items-center justify-between mb-3">
+                            <CardTitle className="text-sm sm:text-base font-bold">Analytics Modules</CardTitle>
+                            <Badge variant="outline" className="text-xs">
+                                <Eye className="h-3 w-3 mr-1" />
+                                4 Modules
+                            </Badge>
+                        </div>
+                        <div className="border-b">
+                            <div className="grid grid-cols-2 gap-1 pb-3">
                                 <TabButton 
                                     value="overview" 
                                     isActive={activeTab === 'overview'} 
                                     onClick={() => setActiveTab('overview')}
                                 >
-                                    <BarChart3 className="h-4 w-4 mr-2 inline" />
-                                    Overview
+                                    <BarChart3 className="h-3 w-3 mr-1 inline" />
+                                    <span className="text-xs">Overview</span>
                                 </TabButton>
                                 <TabButton 
                                     value="sales" 
                                     isActive={activeTab === 'sales'} 
                                     onClick={() => setActiveTab('sales')}
                                 >
-                                    <TrendingUp className="h-4 w-4 mr-2 inline" />
-                                    Penjualan
+                                    <TrendingUp className="h-3 w-3 mr-1 inline" />
+                                    <span className="text-xs">Sales</span>
                                 </TabButton>
                                 <TabButton 
                                     value="products" 
                                     isActive={activeTab === 'products'} 
                                     onClick={() => setActiveTab('products')}
                                 >
-                                    <Package className="h-4 w-4 mr-2 inline" />
-                                    Produk
+                                    <Package className="h-3 w-3 mr-1 inline" />
+                                    <span className="text-xs">Product</span>
                                 </TabButton>
                                 <TabButton 
                                     value="financial" 
                                     isActive={activeTab === 'financial'} 
                                     onClick={() => setActiveTab('financial')}
                                 >
-                                    <DollarSign className="h-4 w-4 mr-2 inline" />
-                                    Keuangan
+                                    <DollarSign className="h-3 w-3 mr-1 inline" />
+                                    <span className="text-xs">Finance</span>
                                 </TabButton>
                             </div>
                         </div>
                     </CardHeader>
                     
-                    <CardContent className="p-6">
+                    <CardContent className="p-3 sm:p-4 lg:p-6">
                         {/* Tab Content */}
                         <TabContent value="overview">
                             <AnalyticsDashboard 
@@ -180,18 +197,18 @@ export default function Analytics({ stores, quickStats }: Props) {
                         </TabContent>
 
                         <TabContent value="sales">
-                            <div className="flex items-center justify-center h-48">
-                                <div className="text-center space-y-4">
-                                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
-                                        <BarChart3 className="h-8 w-8 text-gray-400" />
+                            <div className="flex items-center justify-center min-h-[200px] sm:min-h-[250px]">
+                                <div className="text-center space-y-3 max-w-sm px-4">
+                                    <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center mx-auto">
+                                        <TrendingUp className="h-6 w-6 text-muted-foreground" />
                                     </div>
-                                    <div>
-                                        <h3 className="text-lg font-medium text-gray-900">Laporan Penjualan</h3>
-                                        <p className="text-gray-500 mb-4">Analisis detail penjualan dan tren</p>
+                                    <div className="space-y-2">
+                                        <h3 className="text-sm sm:text-base font-semibold text-foreground">Laporan Penjualan</h3>
+                                        <p className="text-xs text-muted-foreground leading-relaxed">Analisis detail penjualan dan tren performa bisnis</p>
                                         <Link href={route('reports.sales')}>
-                                            <Button variant="outline">
-                                                <FileText className="h-4 w-4 mr-2" />
-                                                Buka Laporan Penjualan
+                                            <Button variant="outline" size="sm" className="mt-3 w-full">
+                                                <FileText className="h-3 w-3 mr-2" />
+                                                <span className="text-xs">Buka Laporan Penjualan</span>
                                             </Button>
                                         </Link>
                                     </div>
@@ -200,18 +217,18 @@ export default function Analytics({ stores, quickStats }: Props) {
                         </TabContent>
 
                         <TabContent value="products">
-                            <div className="flex items-center justify-center h-48">
-                                <div className="text-center space-y-4">
-                                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
-                                        <Package className="h-8 w-8 text-gray-400" />
+                            <div className="flex items-center justify-center min-h-[200px] sm:min-h-[250px]">
+                                <div className="text-center space-y-3 max-w-sm px-4">
+                                    <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center mx-auto">
+                                        <Package className="h-6 w-6 text-muted-foreground" />
                                     </div>
-                                    <div>
-                                        <h3 className="text-lg font-medium text-gray-900">Laporan Inventaris</h3>
-                                        <p className="text-gray-500 mb-4">Analisis stok dan pergerakan produk</p>
+                                    <div className="space-y-2">
+                                        <h3 className="text-sm sm:text-base font-semibold text-foreground">Laporan Inventaris</h3>
+                                        <p className="text-xs text-muted-foreground leading-relaxed">Analisis stok dan pergerakan produk inventaris</p>
                                         <Link href={route('reports.inventory')}>
-                                            <Button variant="outline">
-                                                <Package className="h-4 w-4 mr-2" />
-                                                Buka Laporan Inventaris
+                                            <Button variant="outline" size="sm" className="mt-3 w-full">
+                                                <Package className="h-3 w-3 mr-2" />
+                                                <span className="text-xs">Buka Laporan Inventaris</span>
                                             </Button>
                                         </Link>
                                     </div>
@@ -220,18 +237,18 @@ export default function Analytics({ stores, quickStats }: Props) {
                         </TabContent>
 
                         <TabContent value="financial">
-                            <div className="flex items-center justify-center h-48">
-                                <div className="text-center space-y-4">
-                                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
-                                        <DollarSign className="h-8 w-8 text-gray-400" />
+                            <div className="flex items-center justify-center min-h-[200px] sm:min-h-[250px]">
+                                <div className="text-center space-y-3 max-w-sm px-4">
+                                    <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center mx-auto">
+                                        <DollarSign className="h-6 w-6 text-muted-foreground" />
                                     </div>
-                                    <div>
-                                        <h3 className="text-lg font-medium text-gray-900">Laporan Keuangan</h3>
-                                        <p className="text-gray-500 mb-4">Analisis profit dan cash flow</p>
+                                    <div className="space-y-2">
+                                        <h3 className="text-sm sm:text-base font-semibold text-foreground">Laporan Keuangan</h3>
+                                        <p className="text-xs text-muted-foreground leading-relaxed">Analisis profit, cash flow dan performa keuangan</p>
                                         <Link href={route('reports.financial')}>
-                                            <Button variant="outline">
-                                                <DollarSign className="h-4 w-4 mr-2" />
-                                                Buka Laporan Keuangan
+                                            <Button variant="outline" size="sm" className="mt-3 w-full">
+                                                <DollarSign className="h-3 w-3 mr-2" />
+                                                <span className="text-xs">Buka Laporan Keuangan</span>
                                             </Button>
                                         </Link>
                                     </div>

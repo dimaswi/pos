@@ -295,8 +295,8 @@ export default function Dashboard({ stats, chartData, latestTransactions, user }
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
-            <div className="flex h-full flex-1 flex-col gap-6 rounded-xl p-6 overflow-x-auto">
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="flex h-full flex-1 flex-col gap-6 rounded-xl p-4 md:p-6">
+                <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium">
@@ -824,7 +824,7 @@ export default function Dashboard({ stats, chartData, latestTransactions, user }
                             <CardDescription>Total penjualan yang Anda capai</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div className="grid gap-4 md:grid-cols-3">
+                            <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
                                 <div className="text-center p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg">
                                     <div className="text-2xl font-bold text-blue-700">
                                         {formatCurrency(stats.todaySales)}
@@ -861,7 +861,7 @@ export default function Dashboard({ stats, chartData, latestTransactions, user }
                             <CardDescription>Ringkasan pendapatan perusahaan</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div className="grid gap-4 md:grid-cols-3">
+                            <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
                                 <div className="text-center p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg">
                                     <div className="text-2xl font-bold text-blue-700">
                                         {formatCurrency(stats.todaySales)}
@@ -890,13 +890,14 @@ export default function Dashboard({ stats, chartData, latestTransactions, user }
                     </Card>
                 </PermissionGate>
 
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
                     <Card>
                         <CardHeader>
                             <CardTitle className="text-lg">Transaksi Terbaru</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="overflow-x-auto">
+                            {/* Desktop Table View */}
+                            <div className="hidden md:block overflow-x-auto">
                                 <table className="w-full">
                                     <thead>
                                         <tr className="border-b">
@@ -962,6 +963,54 @@ export default function Dashboard({ stats, chartData, latestTransactions, user }
                                     </tbody>
                                 </table>
                             </div>
+
+                            {/* Mobile Card View */}
+                            <div className="md:hidden space-y-3">
+                                {latestTransactions && latestTransactions.length > 0 ? 
+                                    latestTransactions.map((transaction, index) => (
+                                        <div key={transaction.id} className="bg-muted/20 rounded-lg p-3 border">
+                                            <div className="flex justify-between items-start mb-2">
+                                                <div className="flex-1">
+                                                    <p className="font-medium text-sm">{transaction.transaction_number}</p>
+                                                    <p className="text-xs text-muted-foreground">{transaction.customer_name}</p>
+                                                </div>
+                                                <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                                                    transaction.status === 'completed' 
+                                                        ? 'bg-green-100 text-green-800'
+                                                        : transaction.status === 'pending'
+                                                        ? 'bg-yellow-100 text-yellow-800'
+                                                        : 'bg-gray-100 text-gray-800'
+                                                }`}>
+                                                    {transaction.status === 'completed' ? 'Completed' : 
+                                                     transaction.status === 'pending' ? 'Pending' : transaction.status}
+                                                </span>
+                                            </div>
+                                            <div className="flex justify-between items-center">
+                                                <p className="text-sm font-medium">{formatCurrency(transaction.total_amount)}</p>
+                                                <p className="text-xs text-muted-foreground">{transaction.formatted_date}</p>
+                                            </div>
+                                        </div>
+                                    )) : 
+                                    // Fallback to sample data if no real data
+                                    [1,2,3,4,5].map((i) => (
+                                        <div key={i} className="bg-muted/20 rounded-lg p-3 border">
+                                            <div className="flex justify-between items-start mb-2">
+                                                <div className="flex-1">
+                                                    <p className="font-medium text-sm">TRX{String(Date.now() + i).slice(-9)}</p>
+                                                    <p className="text-xs text-muted-foreground">Customer {i}</p>
+                                                </div>
+                                                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                    Completed
+                                                </span>
+                                            </div>
+                                            <div className="flex justify-between items-center">
+                                                <p className="text-sm font-medium">{formatCurrency(150000 * i)}</p>
+                                                <p className="text-xs text-muted-foreground">{new Date().toLocaleDateString('id-ID')}</p>
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                            </div>
                         </CardContent>
                     </Card>
 
@@ -970,47 +1019,47 @@ export default function Dashboard({ stats, chartData, latestTransactions, user }
                             <CardTitle className="text-lg">Aksi Cepat</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="grid gap-3">
+                            <div className="grid gap-2 sm:gap-3">
                                 <PermissionGate permission="transaction.create" fallback={null}>
                                     <Button 
-                                        className="w-full justify-start h-12"
+                                        className="w-full justify-start h-10 sm:h-12 text-sm"
                                         onClick={() => router.visit('/pos/cashier')}
                                     >
-                                        <ShoppingCart className="mr-2 h-4 w-4" />
-                                        Point of Sale
+                                        <ShoppingCart className="mr-2 h-4 w-4 shrink-0" />
+                                        <span className="truncate">Point of Sale</span>
                                     </Button>
                                 </PermissionGate>
                                 
                                 <PermissionGate permission="transaction.view" fallback={null}>
                                     <Button 
                                         variant="outline" 
-                                        className="w-full justify-start h-12"
+                                        className="w-full justify-start h-10 sm:h-12 text-sm"
                                         onClick={() => router.visit('/sales/transactions')}
                                     >
-                                        <Calculator className="mr-2 h-4 w-4" />
-                                        Sales Management
+                                        <Calculator className="mr-2 h-4 w-4 shrink-0" />
+                                        <span className="truncate">Sales Management</span>
                                     </Button>
                                 </PermissionGate>
 
                                 <PermissionGate permission="inventory.view" fallback={null}>
                                     <Button 
                                         variant="outline" 
-                                        className="w-full justify-start h-12"
+                                        className="w-full justify-start h-10 sm:h-12 text-sm"
                                         onClick={() => router.visit('/inventory')}
                                     >
-                                        <Package className="mr-2 h-4 w-4" />
-                                        Inventory
+                                        <Package className="mr-2 h-4 w-4 shrink-0" />
+                                        <span className="truncate">Inventory</span>
                                     </Button>
                                 </PermissionGate>
 
                                 <PermissionGate permission="customer.view" fallback={null}>
                                     <Button 
                                         variant="outline" 
-                                        className="w-full justify-start h-12"
+                                        className="w-full justify-start h-10 sm:h-12 text-sm"
                                         onClick={() => router.visit('/master-data/customers')}
                                     >
-                                        <Users className="mr-2 h-4 w-4" />
-                                        Customers
+                                        <Users className="mr-2 h-4 w-4 shrink-0" />
+                                        <span className="truncate">Customers</span>
                                     </Button>
                                 </PermissionGate>
 
@@ -1018,27 +1067,27 @@ export default function Dashboard({ stats, chartData, latestTransactions, user }
                                     <>
                                         <Button 
                                             variant="outline" 
-                                            className="w-full justify-start h-12"
+                                            className="w-full justify-start h-10 sm:h-12 text-sm"
                                             onClick={() => router.visit('/reports')}
                                         >
-                                            <BarChart3 className="mr-2 h-4 w-4" />
-                                            Reports
+                                            <BarChart3 className="mr-2 h-4 w-4 shrink-0" />
+                                            <span className="truncate">Reports</span>
                                         </Button>
                                         <Button 
                                             variant="outline" 
-                                            className="w-full justify-start h-12"
+                                            className="w-full justify-start h-10 sm:h-12 text-sm"
                                             onClick={() => router.visit('/master-data')}
                                         >
-                                            <Store className="mr-2 h-4 w-4" />
-                                            Master Data
+                                            <Store className="mr-2 h-4 w-4 shrink-0" />
+                                            <span className="truncate">Master Data</span>
                                         </Button>
                                         <Button 
                                             variant="outline" 
-                                            className="w-full justify-start h-12"
+                                            className="w-full justify-start h-10 sm:h-12 text-sm"
                                             onClick={() => router.visit('/settings')}
                                         >
-                                            <Settings className="mr-2 h-4 w-4" />
-                                            Settings
+                                            <Settings className="mr-2 h-4 w-4 shrink-0" />
+                                            <span className="truncate">Settings</span>
                                         </Button>
                                     </>
                                 )}

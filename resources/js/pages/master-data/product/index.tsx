@@ -229,24 +229,24 @@ export default function ProductIndex() {
                 <CardContent>
                     <div className="space-y-4">
                         {/* Search and Filter Section */}
-                        <div className="flex items-center justify-between gap-4">
+                        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                             <form 
                                 onSubmit={(e) => {
                                     e.preventDefault();
                                     handleSearch(search);
                                 }}
-                                className="flex items-center gap-2"
+                                className="flex flex-1 items-center gap-2"
                             >
                                 <Input
                                     type="text"
                                     placeholder="Cari produk..."
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
-                                    className="w-[300px]"
+                                    className="flex-1 md:w-[300px] md:flex-none"
                                 />
-                                <Button type="submit" size="sm" className="flex items-center gap-2">
+                                <Button type="submit" size="sm" className="flex items-center gap-2 shrink-0">
                                     <Search className="h-4 w-4" />
-                                    Cari
+                                    <span className="hidden sm:inline">Cari</span>
                                 </Button>
                             </form>
                             
@@ -254,21 +254,22 @@ export default function ProductIndex() {
                                 <Button 
                                     variant="outline" 
                                     size="sm" 
-                                    className="flex items-center gap-2"
+                                    className="flex items-center gap-2 flex-1 sm:flex-none justify-center"
                                     onClick={() => setShowFilters(!showFilters)}
                                 >
                                     <Filter className="h-4 w-4" />
-                                    Filter
+                                    <span className="hidden sm:inline">Filter</span>
                                 </Button>
                                 <PermissionGate permission="product.create">
                                     <Button 
                                         variant="outline" 
                                         size="sm" 
-                                        className="flex items-center gap-2 hover:bg-green-200"
+                                        className="flex items-center gap-2 hover:bg-green-200 flex-1 sm:flex-none justify-center"
                                         onClick={() => router.visit('/master-data/products/create')}
                                     >
                                         <PlusCircle className="h-4 w-4 text-green-500" />
-                                        Tambah Produk
+                                        <span className="hidden sm:inline">Tambah Produk</span>
+                                        <span className="sm:hidden">Tambah</span>
                                     </Button>
                                 </PermissionGate>
                             </div>

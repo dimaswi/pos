@@ -269,53 +269,97 @@ export default function InventoryReport({ stores, categories, products, summary,
 
                 {/* Summary Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Total Produk</CardTitle>
-                            <Package className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold text-blue-600">{formatNumber(summary.totalProducts)}</div>
-                            <p className="text-xs text-muted-foreground mt-1">produk tersedia</p>
-                        </CardContent>
-                    </Card>
-
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Nilai Modal Stok</CardTitle>
-                            <DollarSign className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold text-green-600">{formatCurrency(summary.totalStockValue)}</div>
-                            <p className="text-xs text-muted-foreground mt-1">modal tertanam</p>
-                        </CardContent>
-                    </Card>
-
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Potensi Penjualan</CardTitle>
-                            <DollarSign className="h-4 w-4 text-purple-500" />
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold text-purple-600">{formatCurrency(summary.totalPotentialRevenue)}</div>
-                            <p className="text-xs text-muted-foreground mt-1">jika semua terjual</p>
-                        </CardContent>
-                    </Card>
-
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Stok Kritis</CardTitle>
-                            <AlertTriangle className="h-4 w-4 text-yellow-500" />
-                        </CardHeader>
-                        <CardContent>
-                            <div className="flex justify-between items-center">
-                                <div>
-                                    <div className="text-lg font-bold text-yellow-600">{formatNumber(summary.lowStockCount)}</div>
-                                    <p className="text-xs text-muted-foreground">perlu restok</p>
+                    <Card className="border shadow-sm hover:shadow-md transition-shadow">
+                        <CardContent className="p-4 sm:p-6">
+                            <div className="flex items-start justify-between">
+                                <div className="space-y-2 flex-1">
+                                    <div className="flex items-center gap-2">
+                                        <div className="p-2 rounded-lg bg-muted">
+                                            <Package className="h-4 w-4 text-muted-foreground" />
+                                        </div>
+                                        <p className="text-sm font-medium text-muted-foreground">
+                                            Total Produk
+                                        </p>
+                                    </div>
+                                    <p className="text-2xl font-bold text-foreground">
+                                        {formatNumber(summary.totalProducts)}
+                                    </p>
                                 </div>
-                                <div className="text-right">
-                                    <div className="text-lg font-bold text-red-600">{formatNumber(summary.outOfStockCount)}</div>
-                                    <p className="text-xs text-muted-foreground">habis stok</p>
+                            </div>
+                            <div className="flex items-center justify-between mt-4 pt-3 border-t">
+                                <span className="text-xs text-muted-foreground">produk tersedia</span>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="border shadow-sm hover:shadow-md transition-shadow">
+                        <CardContent className="p-4 sm:p-6">
+                            <div className="flex items-start justify-between">
+                                <div className="space-y-2 flex-1">
+                                    <div className="flex items-center gap-2">
+                                        <div className="p-2 rounded-lg bg-muted">
+                                            <DollarSign className="h-4 w-4 text-muted-foreground" />
+                                        </div>
+                                        <p className="text-sm font-medium text-muted-foreground">
+                                            Nilai Modal Stok
+                                        </p>
+                                    </div>
+                                    <p className="text-2xl font-bold text-foreground">
+                                        {formatCurrency(summary.totalStockValue)}
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between mt-4 pt-3 border-t">
+                                <span className="text-xs text-muted-foreground">modal tertanam</span>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="border shadow-sm hover:shadow-md transition-shadow">
+                        <CardContent className="p-4 sm:p-6">
+                            <div className="flex items-start justify-between">
+                                <div className="space-y-2 flex-1">
+                                    <div className="flex items-center gap-2">
+                                        <div className="p-2 rounded-lg bg-muted">
+                                            <DollarSign className="h-4 w-4 text-muted-foreground" />
+                                        </div>
+                                        <p className="text-sm font-medium text-muted-foreground">
+                                            Potensi Penjualan
+                                        </p>
+                                    </div>
+                                    <p className="text-2xl font-bold text-foreground">
+                                        {formatCurrency(summary.totalPotentialRevenue)}
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between mt-4 pt-3 border-t">
+                                <span className="text-xs text-muted-foreground">jika semua terjual</span>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="border shadow-sm hover:shadow-md transition-shadow">
+                        <CardContent className="p-4 sm:p-6">
+                            <div className="flex items-start justify-between">
+                                <div className="space-y-2 flex-1">
+                                    <div className="flex items-center gap-2">
+                                        <div className="p-2 rounded-lg bg-muted">
+                                            <AlertTriangle className="h-4 w-4 text-muted-foreground" />
+                                        </div>
+                                        <p className="text-sm font-medium text-muted-foreground">
+                                            Stok Kritis
+                                        </p>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <div>
+                                            <div className="text-lg font-bold text-foreground">{formatNumber(summary.lowStockCount)}</div>
+                                            <p className="text-xs text-muted-foreground">perlu restok</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <div className="text-lg font-bold text-foreground">{formatNumber(summary.outOfStockCount)}</div>
+                                            <p className="text-xs text-muted-foreground">habis stok</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </CardContent>

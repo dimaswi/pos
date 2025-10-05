@@ -100,21 +100,14 @@ class ProductController extends Controller
             $averageCost = (float) $request->get('average_cost', $request->get('purchase_price', 0));
 
             foreach ($stores as $store) {
-                \App\Models\Inventory::create([
-                    'product_id' => $product->id,
-                    'store_id' => $store->id,
-                    'quantity' => $initialStock,
-                    'minimum_stock' => $request->get('minimum_stock', 0),
-                    'average_cost' => $averageCost,
-                    'last_cost' => $averageCost,
-                ]);
-
                 // Create stock movement record
                 \App\Models\StockMovement::create([
                     'product_id' => $product->id,
                     'store_id' => $store->id,
-                    'movement_type' => 'in',
+                    'user_id' => $request->user() ? $request->user()->id : 1, // Add the authenticated user ID or default to 1
+                    'type' => 'in', // Use 'type' instead of 'movement_type'
                     'quantity' => $initialStock,
+                    'quantity_change' => $initialStock, // Add quantity_change field
                     'quantity_before' => 0,
                     'quantity_after' => $initialStock,
                     'reference_type' => 'initial_stock',

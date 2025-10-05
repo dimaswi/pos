@@ -281,24 +281,24 @@ export default function DiscountIndex() {
                 <CardContent>
                     <div className="space-y-4">
                         {/* Search and Filter Section */}
-                        <div className="flex items-center justify-between gap-4">
+                        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                             <form 
                                 onSubmit={(e) => {
                                     e.preventDefault();
                                     handleSearch(search);
                                 }}
-                                className="flex items-center gap-2"
+                                className="flex flex-1 items-center gap-2"
                             >
                                 <Input
                                     type="text"
                                     placeholder="Search discounts..."
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
-                                    className="w-[300px]"
+                                    className="flex-1 md:w-[300px] md:flex-none"
                                 />
-                                <Button type="submit" size="sm" className="flex items-center gap-2">
+                                <Button type="submit" size="sm" className="shrink-0 flex items-center gap-2">
                                     <Search className="h-4 w-4" />
-                                    Search
+                                    <span className="hidden sm:inline">Search</span>
                                 </Button>
                             </form>
                             
@@ -306,19 +306,20 @@ export default function DiscountIndex() {
                                 <Button 
                                     variant="outline" 
                                     size="sm" 
-                                    className="flex items-center gap-2"
+                                    className="flex-1 sm:flex-none justify-center flex items-center gap-2"
                                     onClick={() => setShowFilters(!showFilters)}
                                 >
                                     <Filter className="h-4 w-4" />
-                                    Filter
+                                    <span className="hidden sm:inline">Filter</span>
                                 </Button>
                                 <PermissionGate permission="discount.create">
                                     <Button 
-                                        className="flex items-center gap-2"
+                                        className="flex-1 sm:flex-none justify-center flex items-center gap-2"
                                         onClick={() => router.visit('/sales/discounts/create')}
                                     >
                                         <Plus className="h-4 w-4" />
-                                        Add Discount
+                                        <span className="hidden sm:inline">Add Discount</span>
+                                        <span className="sm:hidden">Add</span>
                                     </Button>
                                 </PermissionGate>
                             </div>

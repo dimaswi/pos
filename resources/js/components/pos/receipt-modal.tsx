@@ -80,21 +80,21 @@ export default function ReceiptModal({ open, onClose, transactionData }: Props) 
                         <head>
                             <title>Struk Transaksi - ${transactionData.transaction_number}</title>
                             <style>
-                                @page { margin: 10mm; }
+                                @page { margin: 5mm; }
                                 body { 
                                     font-family: 'Courier New', monospace; 
-                                    font-size: 8px; 
+                                    font-size: 14px; 
                                     margin: 0; 
-                                    padding: 2px;
-                                    line-height: 1.1;
+                                    padding: 1px;
+                                    line-height: 1.3;
                                     color: #000;
                                     background: white;
                                 }
                                 .receipt { 
-                                    width: 210mm; 
+                                    width: 139.5mm; 
                                     margin: 0;
                                     background: white;
-                                    padding: 3mm;
+                                    padding: 2mm;
                                 }
                                 .header { 
                                     text-align: left; 
@@ -104,19 +104,19 @@ export default function ReceiptModal({ open, onClose, transactionData }: Props) 
                                     background: #f8f8f8;
                                 }
                                 .store-name { 
-                                    font-size: 9px; 
+                                    font-size: 16px; 
                                     font-weight: bold; 
                                     margin-bottom: 1mm;
                                     text-transform: uppercase;
                                 }
                                 .store-info { 
-                                    font-size: 8px; 
+                                    font-size: 14px; 
                                     margin: 0.5mm 0;
-                                    line-height: 1.1;
+                                    line-height: 1.3;
                                 }
                                 .transaction-info { 
                                     margin: 2mm 0; 
-                                    font-size: 8px;
+                                    font-size: 14px;
                                     border: 1px solid #000;
                                     padding: 1mm;
                                 }
@@ -131,7 +131,7 @@ export default function ReceiptModal({ open, onClose, transactionData }: Props) 
                                     width: 100%;
                                     border-collapse: collapse;
                                     font-family: 'Courier New', monospace;
-                                    font-size: 8px;
+                                    font-size: 14px;
                                 }
                                 th, td {
                                     border: 1px solid #000;
@@ -147,29 +147,14 @@ export default function ReceiptModal({ open, onClose, transactionData }: Props) 
                                     border: 1px solid #000; 
                                     padding: 2mm; 
                                     text-align: left; 
-                                    font-size: 8px; 
+                                    font-size: 14px; 
                                     margin-top: 3mm;
                                     background: #f8f8f8;
                                 }
                                 .footer p { 
                                     margin: 1mm 0; 
                                 }
-                                .signature-section {
-                                    display: flex;
-                                    justify-content: space-between;
-                                    margin-top: 5mm;
-                                    padding-top: 2mm;
-                                    border-top: 1px solid #000;
-                                }
-                                .signature-box {
-                                    text-align: center;
-                                    width: 40mm;
-                                }
-                                .signature-line {
-                                    border-bottom: 1px solid #000;
-                                    height: 15mm;
-                                    margin-bottom: 2mm;
-                                }
+
                                 .bold { font-weight: bold; }
                                 .center { text-align: center; }
                                 .right { text-align: right; }
@@ -180,55 +165,51 @@ export default function ReceiptModal({ open, onClose, transactionData }: Props) 
                         <body>
                             <div class="receipt">
                                 <!-- Header -->
-                                <div style="text-align: center; margin-bottom: 5mm;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #000; padding-bottom: 3mm;">
-                                        <div style="text-align: left;">
+                                <div style="text-align: center; margin-bottom: 3mm;">
+                                    <div style="border-bottom: 1px solid #000; padding-bottom: 2mm;">
+                                        <div style="text-align: center; margin-bottom: 2mm;">
                                             <div class="store-name">${transactionData.store_name}</div>
                                             ${transactionData.store_address ? `<div class="store-info">${transactionData.store_address}</div>` : ''}
                                             ${transactionData.store_phone ? `<div class="store-info">Telp: ${transactionData.store_phone}</div>` : ''}
                                         </div>
-                                        <div style="text-align: right;">
-                                            <div style="font-weight: bold; font-size: 9px; border: 1px solid #000; padding: 2mm; background: #f0f0f0;">NOTA PENJUALAN</div>
-                                            <div style="font-size: 8px; margin-top: 0.5mm; font-weight: bold;">No: ${transactionData.transaction_number}</div>
+                                        <div style="text-align: center;">
+                                            <div style="font-weight: bold; font-size: 16px; border: 1px solid #000; padding: 1.5mm; background: #f0f0f0; display: inline-block;">NOTA PENJUALAN</div>
+                                            <div style="font-size: 14px; margin-top: 0.5mm; font-weight: bold;">No: ${transactionData.transaction_number}</div>
                                         </div>
                                     </div>
                                 </div>
 
                                             <!-- Transaction Info -->
-                                <div style="border: 1px solid #000; padding: 2mm; margin-bottom: 2mm;">
+                                <div style="border: 1px solid #000; padding: 1.5mm; margin-bottom: 2mm;">
                                     <div style="display: flex; justify-content: space-between; margin-bottom: 1mm;">
-                                        <div style="width: 22%;">
-                                            <div style="font-weight: bold; font-size: 8px;">Tanggal</div>
-                                            <div style="font-size: 8px;">${new Date(transactionData.date).toLocaleDateString('id-ID')}</div>
+                                        <div style="width: 32%;">
+                                            <div style="font-weight: bold; font-size: 14px;">Tanggal</div>
+                                            <div style="font-size: 14px;">${new Date(transactionData.date).toLocaleDateString('id-ID')}</div>
                                         </div>
-                                        <div style="width: 22%;">
-                                            <div style="font-weight: bold; font-size: 8px;">Jam</div>
-                                            <div style="font-size: 8px;">${new Date(transactionData.date).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}</div>
+                                        <div style="width: 32%;">
+                                            <div style="font-weight: bold; font-size: 14px;">Jam</div>
+                                            <div style="font-size: 14px;">${new Date(transactionData.date).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}</div>
                                         </div>
-                                        <div style="width: 22%;">
-                                            <div style="font-weight: bold; font-size: 8px;">Customer</div>
-                                            <div style="font-size: 8px;">${transactionData.customer ? transactionData.customer.name : 'UMUM'}</div>
-                                        </div>
-                                        <div style="width: 22%;">
-                                            <div style="font-weight: bold; font-size: 8px;">Kode Customer</div>
-                                            <div style="font-size: 8px;">${transactionData.customer ? transactionData.customer.code : '-'}</div>
+                                        <div style="width: 32%;">
+                                            <div style="font-weight: bold; font-size: 14px;">Kasir</div>
+                                            <div style="font-size: 14px;">${transactionData.cashier_name}</div>
                                         </div>
                                     </div>
                                     <div style="display: flex; justify-content: space-between; border-top: 1px solid #000; padding-top: 1mm;">
                                         <div style="width: 48%;">
-                                            <div style="font-weight: bold; font-size: 8px;">Kasir</div>
-                                            <div style="font-size: 8px;">${transactionData.cashier_name}</div>
+                                            <div style="font-weight: bold; font-size: 14px;">Customer</div>
+                                            <div style="font-size: 14px;">${transactionData.customer ? transactionData.customer.name : 'UMUM'}</div>
                                         </div>
                                         <div style="width: 48%;">
-                                            <div style="font-weight: bold; font-size: 8px;">Member Disc</div>
-                                            <div style="font-size: 8px;">${transactionData.customer?.customer_discount ? `${transactionData.customer.customer_discount.name} (${transactionData.customer_discount_percentage}%)` : '-'}</div>
+                                            <div style="font-weight: bold; font-size: 14px;">Member Disc</div>
+                                            <div style="font-size: 14px;">${transactionData.customer?.customer_discount ? `${transactionData.customer.customer_discount.name} (${transactionData.customer_discount_percentage}%)` : '-'}</div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Items Table -->
                                 <div style="border: 1px solid #000; margin-bottom: 2mm;">
-                                    <table style="width: 100%; font-family: 'Courier New', monospace; font-size: 8px; border-collapse: collapse;">
+                                    <table style="width: 100%; font-family: 'Courier New', monospace; font-size: 14px; border-collapse: collapse;">
                                         <thead>
                                             <tr style="border-bottom: 1px solid #000;">
                                                 <th style="border-right: 1px solid #000; padding: 1mm; text-align: center; font-weight: bold;">NO</th>
@@ -245,7 +226,7 @@ export default function ReceiptModal({ open, onClose, transactionData }: Props) 
                                                 <td style="border-right: 1px solid #000; padding: 0.5mm; text-align: center;">${index + 1}</td>
                                                 <td style="border-right: 1px solid #000; padding: 0.5mm;">
                                                     <div style="font-weight: bold;">${item.product.name}</div>
-                                                    <div style="font-size: 8px;">SKU: ${item.product.sku}</div>
+                                                    <div style="font-size: 12px;">SKU: ${item.product.sku}</div>
                                                 </td>
                                                 <td style="border-right: 1px solid #000; padding: 0.5mm; text-align: center;">${item.quantity}</td>
                                                 <td style="border-right: 1px solid #000; padding: 0.5mm; text-align: right;">Rp ${item.unit_price.toLocaleString('id-ID')}</td>
@@ -260,70 +241,57 @@ export default function ReceiptModal({ open, onClose, transactionData }: Props) 
                                 <!-- Summary & Payment Section -->
                                 <div style="border: 1px solid #000; padding: 2mm; margin-bottom: 2mm;">
                                     <div style="display: flex; justify-content: space-between; margin-bottom: 1mm;">
-                                        <span style="font-weight: bold; font-size: 8px;">SUBTOTAL</span>
-                                        <span style="font-weight: bold; font-size: 8px;">Rp ${transactionData.subtotal.toLocaleString('id-ID')}</span>
+                                        <span style="font-weight: bold; font-size: 14px;">SUBTOTAL</span>
+                                        <span style="font-weight: bold; font-size: 14px;">Rp ${transactionData.subtotal.toLocaleString('id-ID')}</span>
                                     </div>
                                     
                                     ${transactionData.item_discounts > 0 ? `
                                     <div style="display: flex; justify-content: space-between; margin-bottom: 0.5mm;">
-                                        <span style="font-size: 8px;">Diskon Item</span>
-                                        <span style="font-weight: bold; font-size: 8px;">-Rp ${transactionData.item_discounts.toLocaleString('id-ID')}</span>
+                                        <span style="font-size: 14px;">Diskon Item</span>
+                                        <span style="font-weight: bold; font-size: 14px;">-Rp ${transactionData.item_discounts.toLocaleString('id-ID')}</span>
                                     </div>` : ''}
                                     
                                     ${transactionData.customer_discount_amount > 0 ? `
                                     <div style="display: flex; justify-content: space-between; margin-bottom: 0.5mm;">
-                                        <span style="font-size: 8px;">Diskon Member (${transactionData.customer_discount_percentage}%)</span>
-                                        <span style="font-weight: bold; font-size: 8px;">-Rp ${transactionData.customer_discount_amount.toLocaleString('id-ID')}</span>
+                                        <span style="font-size: 14px;">Diskon Member (${transactionData.customer_discount_percentage}%)</span>
+                                        <span style="font-weight: bold; font-size: 14px;">-Rp ${transactionData.customer_discount_amount.toLocaleString('id-ID')}</span>
                                     </div>` : ''}
 
                                     ${transactionData.additional_discount > 0 ? `
                                     <div style="display: flex; justify-content: space-between; margin-bottom: 0.5mm;">
-                                        <span style="font-size: 8px;">Diskon Tambahan</span>
-                                        <span style="font-weight: bold; font-size: 8px;">-Rp ${transactionData.additional_discount.toLocaleString('id-ID')}</span>
+                                        <span style="font-size: 14px;">Diskon Tambahan</span>
+                                        <span style="font-weight: bold; font-size: 14px;">-Rp ${transactionData.additional_discount.toLocaleString('id-ID')}</span>
                                     </div>` : ''}
                                     
                                     <div style="display: flex; justify-content: space-between; margin-bottom: 0.5mm;">
-                                        <span style="font-weight: bold; font-size: 8px;">TOTAL PEMBAYARAN</span>
-                                        <span style="font-weight: bold; font-size: 8px;">Rp ${transactionData.total_amount.toLocaleString('id-ID')}</span>
+                                        <span style="font-weight: bold; font-size: 14px;">TOTAL PEMBAYARAN</span>
+                                        <span style="font-weight: bold; font-size: 14px;">Rp ${transactionData.total_amount.toLocaleString('id-ID')}</span>
                                     </div>
 
                                     ${transactionData.payments.map(payment => `
                                     <div style="display: flex; justify-content: space-between; margin-bottom: 0.5mm;">
-                                        <span style="font-size: 8px;">${payment.payment_method.name}</span>
-                                        <span style="font-weight: bold; font-size: 8px;">Rp ${payment.amount.toLocaleString('id-ID')}</span>
+                                        <span style="font-size: 14px;">${payment.payment_method.name}</span>
+                                        <span style="font-weight: bold; font-size: 14px;">Rp ${payment.amount.toLocaleString('id-ID')}</span>
                                     </div>
                                     `).join('')}
                                     
                                     <div style="display: flex; justify-content: space-between; margin-bottom: 0.5mm;">
-                                        <span style="font-weight: bold; font-size: 8px;">TOTAL BAYAR</span>
-                                        <span style="font-weight: bold; font-size: 8px;">Rp ${transactionData.paid_amount.toLocaleString('id-ID')}</span>
+                                        <span style="font-weight: bold; font-size: 14px;">TOTAL BAYAR</span>
+                                        <span style="font-weight: bold; font-size: 14px;">Rp ${transactionData.paid_amount.toLocaleString('id-ID')}</span>
                                     </div>
                                     
                                     ${transactionData.change_amount > 0 ? `
                                     <div style="display: flex; justify-content: space-between;">
-                                        <span style="font-weight: bold; font-size: 8px;">KEMBALIAN</span>
-                                        <span style="font-weight: bold; font-size: 8px;">Rp ${transactionData.change_amount.toLocaleString('id-ID')}</span>
+                                        <span style="font-weight: bold; font-size: 14px;">KEMBALIAN</span>
+                                        <span style="font-weight: bold; font-size: 14px;">Rp ${transactionData.change_amount.toLocaleString('id-ID')}</span>
                                     </div>
                                     ` : ''}
                                 </div>
                                 
                                 <!-- Footer -->
-                                <div style="border: 1px solid #000; padding: 2mm; margin-top: 2mm;">
-                                    <div style="display: flex; justify-content: space-between; margin-bottom: 2mm;">
-                                        <div style="text-align: center; width: 45%;">
-                                            <div style="border-bottom: 1px solid #000; height: 10mm; margin-bottom: 1mm;"></div>
-                                            <div style="font-weight: bold; font-size: 8px;">PENERIMA</div>
-                                        </div>
-                                        <div style="text-align: center; width: 45%;">
-                                            <div style="border-bottom: 1px solid #000; height: 10mm; margin-bottom: 1mm;"></div>
-                                            <div style="font-weight: bold; font-size: 8px;">KASIR</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div style="text-align: center; border-top: 1px solid #000; padding-top: 1mm;">
-                                        <p style="font-size: 8px; font-weight: bold; margin: 0;">Terima kasih atas kepercayaan Anda</p>
-                                        <p style="font-size: 7px; margin: 0;">Powered by POS System</p>
-                                    </div>
+                                <div style="border: 1px solid #000; padding: 2mm; margin-top: 2mm; text-align: center;">
+                                    <p style="font-size: 14px; font-weight: bold; margin: 0;">Terima kasih atas kepercayaan Anda</p>
+                                    <p style="font-size: 12px; margin: 0;">Powered by POS System</p>
                                 </div>
                             </div>
                         </body>
@@ -362,7 +330,7 @@ export default function ReceiptModal({ open, onClose, transactionData }: Props) 
 
                 {/* Receipt Content */}
                 <div className="flex-1 overflow-y-auto p-3 bg-gray-100">
-                    <div id="receipt-content" className="bg-white border border-gray-400 font-mono text-xs leading-tight p-4" style={{ width: 'auto', minWidth: '210mm', fontFamily: 'Courier New, monospace' }}>
+                    <div id="receipt-content" className="bg-white border border-gray-400 font-mono text-xs leading-tight p-4" style={{ width: 'auto', minWidth: '139.5mm', fontFamily: 'Courier New, monospace' }}>
                         {/* Header */}
                         <div className="text-center mb-4">
                             <div className="flex justify-between items-center border-b border-black pb-3">
@@ -503,22 +471,9 @@ export default function ReceiptModal({ open, onClose, transactionData }: Props) 
                         </div>
 
                         {/* Footer */}
-                        <div className="mt-4 border border-black p-3 bg-gray-50">
-                            <div className="flex justify-between">
-                                <div className="text-center w-1/2">
-                                    <div className="border-b border-black h-12 mb-1"></div>
-                                    <div className="font-bold text-xs">PENERIMA</div>
-                                </div>
-                                <div className="text-center w-1/2">
-                                    <div className="border-b border-black h-12 mb-1"></div>
-                                    <div className="font-bold text-xs">KASIR</div>
-                                </div>
-                            </div>
-                            
-                            <div className="mt-3 text-center border-t border-gray-400 pt-2">
-                                <p className="text-xs font-bold">Terima kasih atas kepercayaan Anda</p>
-                                <p className="text-xs text-gray-600">Powered by POS System • {new Date().getFullYear()}</p>
-                            </div>
+                        <div className="mt-4 border border-black p-3 bg-gray-50 text-center">
+                            <p className="text-xs font-bold">Terima kasih atas kepercayaan Anda</p>
+                            <p className="text-xs text-gray-600">Powered by POS System • {new Date().getFullYear()}</p>
                         </div>
                     </div>
                 </div>

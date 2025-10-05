@@ -271,14 +271,14 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                     <Menu className="h-5 w-5" />
                                 </Button>
                             </SheetTrigger>
-                            <SheetContent side="left" className="flex h-full w-64 flex-col items-stretch justify-between bg-sidebar">
+                            <SheetContent side="left" className="flex h-full w-64 flex-col bg-sidebar p-0">
                                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-                                <SheetHeader className="flex justify-start text-left">
+                                <SheetHeader className="flex justify-start text-left p-4 border-b">
                                     <AppLogoIcon className="h-6 w-6 fill-current text-black dark:text-white" />
                                 </SheetHeader>
-                                <div className="flex h-full flex-1 flex-col space-y-4 p-4">
-                                    <div className="flex h-full flex-col justify-between text-sm">
-                                        <div className="flex flex-col space-y-2">
+                                <div className="flex h-full flex-1 flex-col overflow-hidden">
+                                    <div className="flex-1 overflow-y-auto px-4 py-4">
+                                        <div className="flex flex-col space-y-2 text-sm">
                                             {filteredNavItems.map((item) => (
                                                 <div key={item.title} className="space-y-2">
                                                     <Link 
@@ -312,7 +312,10 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                                 </div>
                                             ))}
                                         </div>
-
+                                    </div>
+                                    
+                                    {/* Footer section - fixed at bottom */}
+                                    <div className="border-t px-4 py-4">
                                         <div className="flex flex-col space-y-4">
                                             {rightNavItems.map((item) => (
                                                 <a
@@ -320,7 +323,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                                     href={item.href}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="flex items-center space-x-2 font-medium"
+                                                    className="flex items-center space-x-2 text-sm font-medium"
                                                 >
                                                     {item.icon && <Icon iconNode={item.icon} className="h-5 w-5" />}
                                                     <span>{item.title}</span>

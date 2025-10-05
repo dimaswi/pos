@@ -224,63 +224,95 @@ export default function SalesReport({ stores, transactions, summary, topProducts
 
                 {/* Summary Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Total Penjualan</CardTitle>
-                        <DollarSign className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold text-green-600">
-                            {formatCurrency(summary.totalSales)}
+                    <Card className="border shadow-sm hover:shadow-md transition-shadow">
+                    <CardContent className="p-4 sm:p-6">
+                        <div className="flex items-start justify-between">
+                            <div className="space-y-2 flex-1">
+                                <div className="flex items-center gap-2">
+                                    <div className="p-2 rounded-lg bg-muted">
+                                        <DollarSign className="h-4 w-4 text-muted-foreground" />
+                                    </div>
+                                    <p className="text-sm font-medium text-muted-foreground">
+                                        Total Penjualan
+                                    </p>
+                                </div>
+                                <p className="text-2xl font-bold text-foreground">
+                                    {formatCurrency(summary.totalSales)}
+                                </p>
+                            </div>
                         </div>
-                        <p className="text-xs text-muted-foreground">
-                            Revenue total periode ini
-                        </p>
+                        <div className="flex items-center justify-between mt-4 pt-3 border-t">
+                            <span className="text-xs text-muted-foreground">Revenue total periode ini</span>
+                        </div>
                     </CardContent>
                 </Card>
 
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Total Transaksi</CardTitle>
-                        <ShoppingCart className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold text-blue-600">
-                            {formatNumber(summary.totalTransactions)}
+                <Card className="border shadow-sm hover:shadow-md transition-shadow">
+                    <CardContent className="p-4 sm:p-6">
+                        <div className="flex items-start justify-between">
+                            <div className="space-y-2 flex-1">
+                                <div className="flex items-center gap-2">
+                                    <div className="p-2 rounded-lg bg-muted">
+                                        <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+                                    </div>
+                                    <p className="text-sm font-medium text-muted-foreground">
+                                        Total Transaksi
+                                    </p>
+                                </div>
+                                <p className="text-2xl font-bold text-foreground">
+                                    {formatNumber(summary.totalTransactions)}
+                                </p>
+                            </div>
                         </div>
-                        <p className="text-xs text-muted-foreground">
-                            Jumlah transaksi
-                        </p>
+                        <div className="flex items-center justify-between mt-4 pt-3 border-t">
+                            <span className="text-xs text-muted-foreground">Jumlah transaksi</span>
+                        </div>
                     </CardContent>
                 </Card>
 
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Rata-rata Transaksi</CardTitle>
-                        <TrendingUp className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold text-orange-600">
-                            {formatCurrency(summary.averageTransaction)}
+                <Card className="border shadow-sm hover:shadow-md transition-shadow">
+                    <CardContent className="p-4 sm:p-6">
+                        <div className="flex items-start justify-between">
+                            <div className="space-y-2 flex-1">
+                                <div className="flex items-center gap-2">
+                                    <div className="p-2 rounded-lg bg-muted">
+                                        <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                                    </div>
+                                    <p className="text-sm font-medium text-muted-foreground">
+                                        Rata-rata Transaksi
+                                    </p>
+                                </div>
+                                <p className="text-2xl font-bold text-foreground">
+                                    {formatCurrency(summary.averageTransaction)}
+                                </p>
+                            </div>
                         </div>
-                        <p className="text-xs text-muted-foreground">
-                            Nilai rata-rata per transaksi
-                        </p>
+                        <div className="flex items-center justify-between mt-4 pt-3 border-t">
+                            <span className="text-xs text-muted-foreground">Nilai rata-rata per transaksi</span>
+                        </div>
                     </CardContent>
                 </Card>
 
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Total Item</CardTitle>
-                        <Package className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold text-purple-600">
-                            {formatNumber(summary.totalItems)}
+                <Card className="border shadow-sm hover:shadow-md transition-shadow">
+                    <CardContent className="p-4 sm:p-6">
+                        <div className="flex items-start justify-between">
+                            <div className="space-y-2 flex-1">
+                                <div className="flex items-center gap-2">
+                                    <div className="p-2 rounded-lg bg-muted">
+                                        <Package className="h-4 w-4 text-muted-foreground" />
+                                    </div>
+                                    <p className="text-sm font-medium text-muted-foreground">
+                                        Total Item
+                                    </p>
+                                </div>
+                                <p className="text-2xl font-bold text-foreground">
+                                    {formatNumber(summary.totalItems)}
+                                </p>
+                            </div>
                         </div>
-                        <p className="text-xs text-muted-foreground">
-                            Jumlah item terjual
-                        </p>
+                        <div className="flex items-center justify-between mt-4 pt-3 border-t">
+                            <span className="text-xs text-muted-foreground">Jumlah item terjual</span>
+                        </div>
                     </CardContent>
                 </Card>
             </div>
@@ -297,13 +329,13 @@ export default function SalesReport({ stores, transactions, summary, topProducts
                     <CardContent>
                         <div className="space-y-3">
                             {topProducts.map((product, index) => (
-                                <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                <div key={index} className="flex justify-between items-center p-3 bg-muted/30 rounded-lg border">
                                     <div>
-                                        <p className="font-medium">{product.name}</p>
-                                        <p className="text-sm text-gray-600">{formatNumber(product.total_quantity)} unit</p>
+                                        <p className="font-medium text-foreground">{product.name}</p>
+                                        <p className="text-sm text-muted-foreground">{formatNumber(product.total_quantity)} unit</p>
                                     </div>
                                     <div className="text-right">
-                                        <p className="font-bold">{formatCurrency(product.total_revenue)}</p>
+                                        <p className="font-bold text-foreground">{formatCurrency(product.total_revenue)}</p>
                                         <Badge variant="outline">#{index + 1}</Badge>
                                     </div>
                                 </div>
@@ -323,9 +355,9 @@ export default function SalesReport({ stores, transactions, summary, topProducts
                     <CardContent>
                         <div className="space-y-3">
                             {Object.entries(chartData).map(([date, amount]) => (
-                                <div key={date} className="flex justify-between items-center">
-                                    <span className="text-sm font-medium">{date}</span>
-                                    <span className="font-bold">{formatCurrency(amount)}</span>
+                                <div key={date} className="flex justify-between items-center p-2 rounded border bg-muted/20">
+                                    <span className="text-sm font-medium text-foreground">{date}</span>
+                                    <span className="font-bold text-foreground">{formatCurrency(amount)}</span>
                                 </div>
                             ))}
                         </div>
