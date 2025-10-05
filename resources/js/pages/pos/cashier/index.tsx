@@ -23,7 +23,6 @@ import Cart from '../../../components/pos/cart';
 import CustomerSelect from '../../../components/pos/customer-select';
 import PaymentModal from '../../../components/pos/payment-modal';
 import QuickCustomerModal from '../../../components/pos/quick-customer-modal';
-import TransactionHistoryModal from '../../../components/pos/transaction-history-modal';
 import HotkeyHelp from '../../../components/pos/hotkey-help';
 import { useHotkeys } from '../../../hooks/useHotkeys';
 import { toast } from 'sonner';
@@ -119,7 +118,6 @@ export default function POSCashier({
     const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
     const [showPaymentModal, setShowPaymentModal] = useState(false);
     const [showCustomerModal, setShowCustomerModal] = useState(false);
-    const [showTransactionHistory, setShowTransactionHistory] = useState(false);
     const [barcodeScan, setBarcodeScan] = useState('');
     const [showHotkeyHelp, setShowHotkeyHelp] = useState(false);
     
@@ -308,17 +306,10 @@ export default function POSCashier({
             disabled: cart.length === 0
         },
         {
-            key: 'F12',
-            callback: () => setShowTransactionHistory(true),
-            description: 'Lihat riwayat transaksi',
-            category: 'Navigation'
-        },
-        {
             key: 'Escape',
             callback: () => {
                 setShowPaymentModal(false);
                 setShowCustomerModal(false);
-                setShowTransactionHistory(false);
                 setShowHotkeyHelp(false);
             },
             description: 'Tutup modal/Batalkan',
@@ -379,17 +370,6 @@ export default function POSCashier({
                             >
                                 <Keyboard className="h-4 w-4" />
                                 F1
-                            </Button>
-                            
-                            {/* Transaction History Button */}
-                            <Button 
-                                variant="outline" 
-                                size="sm"
-                                onClick={() => setShowTransactionHistory(true)}
-                                className="flex items-center gap-2"
-                            >
-                                <Receipt className="h-4 w-4" />
-                                Riwayat
                             </Button>
                         </div>
 
@@ -536,14 +516,6 @@ export default function POSCashier({
                         setSelectedCustomer(customer);
                         setShowCustomerModal(false);
                     }}
-                />
-            )}
-
-            {/* Transaction History Modal */}
-            {showTransactionHistory && (
-                <TransactionHistoryModal
-                    open={showTransactionHistory}
-                    onClose={() => setShowTransactionHistory(false)}
                 />
             )}
 

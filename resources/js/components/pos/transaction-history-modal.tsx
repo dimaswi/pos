@@ -95,6 +95,19 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({ open,
     const [totalPages, setTotalPages] = useState(1);
     const [total, setTotal] = useState(0);
     const [activeTab, setActiveTab] = useState<'list' | 'detail'>('list');
+
+    // Debug state changes
+    useEffect(() => {
+        console.log('TransactionHistoryModal state update:', {
+            open,
+            loading,
+            transactionsLength: transactions.length,
+            total,
+            currentPage,
+            totalPages,
+            activeTab
+        });
+    }, [open, loading, transactions.length, total, currentPage, totalPages, activeTab]);
     
     // Filter states
     const [searchTerm, setSearchTerm] = useState('');
@@ -105,35 +118,108 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({ open,
     const fetchTransactions = async (page = 1) => {
         try {
             setLoading(true);
+            
+            // Only include non-empty filter parameters
             const params = new URLSearchParams({
                 page: page.toString(),
-                per_page: '5',
-                search: searchTerm,
-                start_date: startDate,
-                end_date: endDate,
-                payment_status: paymentStatus,
+                per_page: '10', // Changed to 10 for better data display
             });
 
-            const response = await fetch(`/pos/cashier/transaction-history?${params}`);
+            // Add optional parameters only if they have values
+            if (searchTerm.trim()) {
+                params.append('search', searchTerm.trim());
+            }
+            if (startDate) {
+                params.append('start_date', startDate);
+            }
+            if (endDate) {
+                params.append('end_date', endDate);
+            }
+            if (paymentStatus) {
+                params.append('payment_status', paymentStatus);
+            }
+
+            console.log('Fetching transactions with params:', params.toString());
             
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+            // Try different possible endpoints
+            const endpoints = [
+                `/pos/cashier/transaction-history?${params}`,
+                `/api/pos/transactions?${params}`,
+                `/pos/transactions?${params}`,
+                `/api/transactions?${params}`
+            ];
+            
+            let response;
+            let lastError;
+            
+            for (const endpoint of endpoints) {
+                try {
+                    console.log('Trying endpoint:', endpoint);
+                    response = await fetch(endpoint);
+                    if (response.ok) {
+                        console.log('Success with endpoint:', endpoint);
+                        break;
+                    } else {
+                        console.log('Failed with endpoint:', endpoint, response.status);
+                        lastError = new Error(`HTTP error! status: ${response.status} for ${endpoint}`);
+                    }
+                } catch (err) {
+                    console.log('Error with endpoint:', endpoint, err);
+                    lastError = err;
+                }
+            }
+            
+            if (!response || !response.ok) {
+                console.error('All endpoints failed. Last error:', lastError);
+                throw lastError || new Error('All endpoints failed');
             }
             
             const data = await response.json();
             console.log('Transaction history response:', data);
 
-            if (data.success) {
-                setTransactions(data.data.data);
-                setCurrentPage(data.data.current_page);
-                setTotalPages(data.data.last_page);
-                setTotal(data.data.total);
+            if (data && data.success) {
+                // Handle different response structures
+                const transactions = data.data?.data || data.data || [];
+                const pagination = data.data?.pagination || data.pagination || {};
+                
+                setTransactions(transactions);
+                setCurrentPage(pagination.current_page || data.data?.current_page || 1);
+                setTotalPages(pagination.last_page || data.data?.last_page || 1);
+                setTotal(pagination.total || data.data?.total || transactions.length);
+                
+                console.log('Set transactions:', transactions);
+                
+                if (transactions.length === 0) {
+                    console.warn('No transactions found in response');
+                }
             } else {
-                toast.error('Gagal memuat riwayat transaksi');
+                console.error('Response indicates failure or no success flag:', data);
+                
+                // Try to handle response without success flag
+                if (data && Array.isArray(data)) {
+                    console.log('Handling array response directly');
+                    setTransactions(data);
+                    setTotal(data.length);
+                    setCurrentPage(1);
+                    setTotalPages(1);
+                } else if (data && data.data && Array.isArray(data.data)) {
+                    console.log('Handling nested data array');
+                    setTransactions(data.data);
+                    setTotal(data.data.length);
+                    setCurrentPage(1);
+                    setTotalPages(1);
+                } else {
+                    toast.error(data?.message || 'Gagal memuat riwayat transaksi');
+                    setTransactions([]);
+                    setTotal(0);
+                }
             }
         } catch (error) {
             console.error('Error fetching transactions:', error);
-            toast.error('Terjadi kesalahan saat memuat data');
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+            toast.error('Terjadi kesalahan saat memuat data: ' + errorMessage);
+            setTransactions([]);
+            setTotal(0);
         } finally {
             setLoading(false);
         }
@@ -142,24 +228,55 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({ open,
     const fetchTransactionDetail = async (transactionId: number) => {
         try {
             setDetailLoading(true);
-            const response = await fetch(`/pos/cashier/transaction/${transactionId}`);
+            console.log('Fetching transaction detail for ID:', transactionId);
             
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+            // Try different possible endpoints for detail
+            const detailEndpoints = [
+                `/pos/cashier/transaction/${transactionId}`,
+                `/api/pos/transactions/${transactionId}`,
+                `/pos/transactions/${transactionId}`,
+                `/api/transactions/${transactionId}`
+            ];
+            
+            let response;
+            let lastError;
+            
+            for (const endpoint of detailEndpoints) {
+                try {
+                    console.log('Trying detail endpoint:', endpoint);
+                    response = await fetch(endpoint);
+                    if (response.ok) {
+                        console.log('Success with detail endpoint:', endpoint);
+                        break;
+                    } else {
+                        console.log('Failed with detail endpoint:', endpoint, response.status);
+                        lastError = new Error(`HTTP error! status: ${response.status} for ${endpoint}`);
+                    }
+                } catch (err) {
+                    console.log('Error with detail endpoint:', endpoint, err);
+                    lastError = err;
+                }
+            }
+            
+            if (!response || !response.ok) {
+                console.error('All detail endpoints failed. Last error:', lastError);
+                throw lastError || new Error('All detail endpoints failed');
             }
             
             const data = await response.json();
             console.log('Transaction detail response:', data);
 
-            if (data.success) {
+            if (data && data.success) {
                 setSelectedTransaction(data.data);
                 setActiveTab('detail');
             } else {
-                toast.error('Gagal memuat detail transaksi');
+                console.error('Detail response indicates failure:', data);
+                toast.error(data.message || 'Gagal memuat detail transaksi');
             }
         } catch (error) {
             console.error('Error fetching transaction detail:', error);
-            toast.error('Terjadi kesalahan saat memuat detail');
+            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+            toast.error('Terjadi kesalahan saat memuat detail: ' + errorMessage);
         } finally {
             setDetailLoading(false);
         }
@@ -167,12 +284,28 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({ open,
 
     useEffect(() => {
         if (open) {
+            console.log('Modal opened, fetching transactions...');
             // Reset to list view when opening modal
             setActiveTab('list');
             setSelectedTransaction(null);
+            setCurrentPage(1);
+            fetchTransactions(1);
+        } else {
+            // Reset state when modal closes
+            setTransactions([]);
+            setSelectedTransaction(null);
+            setActiveTab('list');
+        }
+    }, [open]);
+
+    // Separate effect for filters
+    useEffect(() => {
+        if (open && (searchTerm || startDate || endDate || paymentStatus)) {
+            console.log('Filters changed, refetching transactions...');
+            setCurrentPage(1);
             fetchTransactions(1);
         }
-    }, [open, searchTerm, startDate, endDate, paymentStatus]);
+    }, [searchTerm, startDate, endDate, paymentStatus]);
 
     const handleSearch = () => {
         setCurrentPage(1);
@@ -376,8 +509,19 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({ open,
                                     </div>
 
                                     {/* Summary */}
-                                    <div className="text-sm text-gray-600">
-                                        Menampilkan {transactions.length} dari {total} transaksi
+                                    <div className="text-sm text-gray-600 flex justify-between items-center">
+                                        <span>Menampilkan {transactions.length} dari {total} transaksi</span>
+                                        {!loading && (
+                                            <Button
+                                                onClick={() => fetchTransactions(currentPage)}
+                                                variant="ghost"
+                                                size="sm"
+                                                className="h-6 px-2 text-xs"
+                                            >
+                                                <RefreshCw className="h-3 w-3 mr-1" />
+                                                Refresh
+                                            </Button>
+                                        )}
                                     </div>
 
                                     {/* Transactions List */}
@@ -469,10 +613,25 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({ open,
                                                 </div>
                                             ))}
 
-                                            {transactions.length === 0 && (
+                                            {transactions.length === 0 && !loading && (
                                                 <div className="text-center py-12 text-gray-500">
                                                     <Receipt className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                                                    <p>Tidak ada transaksi ditemukan</p>
+                                                    <p className="mb-2">Tidak ada transaksi ditemukan</p>
+                                                    <p className="text-xs text-gray-400">
+                                                        Coba periksa filter atau refresh data
+                                                    </p>
+                                                    <Button
+                                                        onClick={() => {
+                                                            clearFilters();
+                                                            fetchTransactions(1);
+                                                        }}
+                                                        variant="outline"
+                                                        size="sm"
+                                                        className="mt-3"
+                                                    >
+                                                        <RefreshCw className="h-3 w-3 mr-1" />
+                                                        Coba Lagi
+                                                    </Button>
                                                 </div>
                                             )}
                                         </div>
